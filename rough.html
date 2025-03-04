@@ -1,0 +1,48 @@
+<div class="about-us">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                
+
+<form action="#" method="get">
+    <!-- Country Dropdown -->
+    <label for="country">Select Country:</label>
+    <select id="country" name="country">
+        <option value="NG" selected>Nigeria (NG)</option>
+        <option value="ZA">South Africa (ZA)</option>
+        <option value="KE">Kenya (KE)</option>
+        <option value="EG">Egypt (EG)</option>
+        <option value="DZ">Algeria (DZ)</option>
+        <option value="MA">Morocco (MA)</option>
+        <option value="ET">Ethiopia (ET)</option>
+        <option value="UG">Uganda (UG)</option>
+        <option value="GH">Ghana (GH)</option>
+        <option value="TZ">Tanzania (TZ)</option>
+    </select>
+
+    <!-- Link Dropdown -->
+    <label for="link-option">Choose an Option:</label>
+    <select id="link-option" name="link-option">
+        <option value="https://www.example1.com" selected>Option 1</option>
+        <option value="https://www.example2.com">Option 2</option>
+        <option value="https://www.example3.com">Option 3</option>
+        <option value="https://www.example4.com">Option 4</option>
+    </select>
+
+    <!-- Submit Button -->
+    <a id="link-button" href="https://www.example1.com" target="_blank">
+        <button type="button" class="btn">Go to Link</button>
+    </a>
+</form>
+</div>
+
+<script>
+document.getElementById('link-option').addEventListener('change', function() {
+    var selectedLink = this.value;
+    document.getElementById('link-button').href = selectedLink;
+});
+</script>
+
+</div>
+</div>
+</div>

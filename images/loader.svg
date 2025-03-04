@@ -1,0 +1,21 @@
+<svg width="167" height="39" viewBox="0 0 167 39" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="19" cy="19.7178" r="19" fill="#F39C12"/>
+  <g clip-path="url(#clip0_258_27910)">
+    <mask id="mask0_258_27910" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="10" y="10" width="18" height="19">
+      <path d="M10 10.7178H28V28.7178H10V10.7178Z" fill="white"/>
+    </mask>
+    <g mask="url(#mask0_258_27910)">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M27.7803 14.6874C28.0732 14.9803 28.0732 15.4552 27.7803 15.7481L20.6553 22.8731C20.3624 23.166 19.8876 23.166 19.5947 22.8731L16.375 19.6534L11.2803 24.7481C10.9874 25.041 10.5126 25.041 10.2197 24.7481C9.92678 24.4552 9.92678 23.9803 10.2197 23.6874L15.8447 18.0624C16.1376 17.7696 16.6124 17.7696 16.9053 18.0624L20.125 21.2821L26.7197 14.6874C27.0126 14.3946 27.4874 14.3946 27.7803 14.6874Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M22 15.2178C22 14.8036 22.3358 14.4678 22.75 14.4678H27.25C27.6642 14.4678 28 14.8036 28 15.2178V19.7178C28 20.132 27.6642 20.4678 27.25 20.4678C26.8358 20.4678 26.5 20.132 26.5 19.7178V15.9678H22.75C22.3358 15.9678 22 15.632 22 15.2178Z" fill="white"/>
+    </g>
+  </g>
+
+  <!-- Adding the text "DaysRate" with icon color and increased font size -->
+  <text x="60" y="25" font-family="Arial" font-size="20" fill="#F39C12">DaysRate</text>
+
+  <defs>
+    <clipPath id="clip0_258_27910">
+      <rect width="18" height="18" fill="white" transform="translate(10 10.7178)"/>
+    </clipPath>
+  </defs>
+</svg>
