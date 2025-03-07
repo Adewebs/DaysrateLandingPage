@@ -1,0 +1,7 @@
+# Ignore static files
+/static
+/staticfiles
+/logs/*
+# Ignore all migration files
+*/migrations/*
+!*/migrations/__init__.py

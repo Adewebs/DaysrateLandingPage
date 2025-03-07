@@ -31,7 +31,12 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'corsheaders',
+    'merchant',
+    'buyers',
+    'systemcontrol',
+    'auth',
     'django.contrib.humanize',
+
 
 
 ]
