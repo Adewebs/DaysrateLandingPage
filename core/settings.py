@@ -14,9 +14,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+import socket
 
-ALLOWED_HOSTS = []
+# Get the machine's hostname
+hostname = socket.gethostname()
+DEBUG = True
+# Assuming your local machine will have 'localhost' or '127.0.0.1'
+# if hostname == 'localhost' or hostname == '127.0.0.1':
+#     DEBUG = True
+#     ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# else:
+#     DEBUG = False
+#     ALLOWED_HOSTS = ['daysrate.com']  # Empty list or other allowed hosts
+
+#DEBUG = True
+
+#ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -43,6 +56,7 @@ INSTALLED_APPS = [
 
 ]
 
+AUTH_USER_MODEL='system_user.CustomerInfo'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -87,6 +101,17 @@ if DEBUG:
     }
 else:
     pass
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'NAME': 'daysyrgs_moneyexchangerSystem',
+    #         'USER': 'daysyrgs_gento121wer',
+    #         'PASSWORD': 'Bj8NyGij3&06',
+    #         'HOST': 'localhost',
+    #         'PORT': '3306',
+    #     }
+    # }
+
 
 
 # Password validation
