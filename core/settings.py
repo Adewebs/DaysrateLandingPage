@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework',
     'corsheaders',
+    'drf_spectacular',
     'merchant',
     'buyers',
     'systemcontrol',
@@ -148,7 +149,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
 
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema' if DEBUG else None
 
 }
 
@@ -181,9 +183,24 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Optional, session does not expire on 
 # Ensure sessions are deleted after they expire (default is True)
 SESSION_SAVE_EVERY_REQUEST = True
 
+# DRF Spectacular OpenAPI/Swagger settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'DaysRate.com Backend API',
+    'DESCRIPTION': 'This is the open Ai interactive section of the built api for daysrate',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'COMPONENT_NO_READ_ONLY_REQUIRED': True,
+
+    # Security
+    'SECURITY': [
+        {'Bearer': []},  # JWT authentication
+    ],
+}
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
