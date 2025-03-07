@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'buyers',
     'systemcontrol',
     'auth',
+    'system_user',
     'django.contrib.humanize',
 
 
