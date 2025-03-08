@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -14,6 +15,7 @@ class EmailVerificationSerializer(serializers.Serializer):
 class EmailVerificationView(generics.GenericAPIView):
     """Verify the registration token from the email verification request"""
     serializer_class = EmailVerificationSerializer
+    permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         # Check if the request data is valid
