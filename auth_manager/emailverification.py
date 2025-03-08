@@ -6,15 +6,15 @@ from system_user.models import CustomerInfo
 from rest_framework import serializers
 from rest_framework import generics
 
-
 class EmailVerificationSerializer(serializers.Serializer):
     email = serializers.EmailField()
     token = serializers.CharField()
 
-
 class EmailVerificationView(generics.GenericAPIView):
     """Verify the registration token from the email verification request"""
     serializer_class = EmailVerificationSerializer
+
+    # Ensure this line is present and correctly formatted
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
@@ -44,4 +44,3 @@ class EmailVerificationView(generics.GenericAPIView):
 
         # If the serializer is not valid, return errors
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
