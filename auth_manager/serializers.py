@@ -4,6 +4,8 @@ from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
+from django.contrib.auth.password_validation import validate_password
+
 class CustomerInfoSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     class Meta:
@@ -63,29 +65,58 @@ class CustomerInfoRetrieveSerializer(serializers.ModelSerializer):
         fields = ['first_name', 'last_name', 'email', 'phone_number', 'country', 'user_type','currency','user_address']
 
 
-class EmailPasswordVerificationSerializer(serializers.Serializer):
+class VerifyRegistrationSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    token = serializers.CharField()
+    registration_token = serializers.CharField(max_length=255)
 
     def validate(self, attrs):
+        """
+        Custom validation to ensure the registration token matches the one stored in the user's record.
+        """
         email = attrs.get('email')
-        token = attrs.get('token')
+        registration_token = attrs.get('registration_token')
 
-        # Check if the email exists
         try:
+            # Get the user based on the email
             user = CustomerInfo.objects.get(email=email)
         except CustomerInfo.DoesNotExist:
-            raise serializers.ValidationError({"detail": "User with this email does not exist."})
+            raise serializers.ValidationError("User with this email does not exist.")
 
-        # Check if token matches either the registration token or the password reset token
-        if user.registration_token == token:
-            attrs['user'] = user
-            attrs['is_email_verification'] = True
-        elif user.forget_password_token == token:
-            attrs['user'] = user
-            attrs['is_email_verification'] = False
-        else:
-            raise serializers.ValidationError({"detail": "Invalid token."})
+        # Check if the registration token matches the one stored for this user
+        if user.registration_token != registration_token:
+            raise serializers.ValidationError("Invalid registration token.")
 
         return attrs
+
+
+class PasswordResetRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        """
+        Validate that the email exists in the system.
+        """
+        try:
+            user = CustomerInfo.objects.get(email=value)
+        except CustomerInfo.DoesNotExist:
+            raise serializers.ValidationError("User with this email does not exist.")
+        return value
+
+
+class PasswordResetVerifySerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    token = serializers.CharField()
+    new_password = serializers.CharField(min_length=8)
+
+    def validate_new_password(self, value):
+        """
+        Validate the password using Django's password validators.
+        """
+        try:
+            validate_password(value)
+        except Exception as e:
+            raise serializers.ValidationError(str(e))
+        return value
+
+
 

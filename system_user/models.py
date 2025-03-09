@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
-
-
+from datetime import datetime, timedelta
+from django.utils.crypto import get_random_string
 class CustomerInfo(AbstractUser):
     COUNTRY_CHOICES = [
         ("NG", "Nigeria"),
@@ -63,6 +63,7 @@ class CustomerInfo(AbstractUser):
     wallet_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     bvn = models.CharField(max_length=50, blank=True, null=True)
     forget_password_token = models.CharField(max_length=255, blank=True, null=True)
+    token_expiration = models.DateTimeField(null=True, blank=True)  # Expiration field
     registration_token = models.CharField(max_length=255, blank=True, null=True)
     profile_image = models.ImageField(upload_to='customer_profile_image/', blank=True, null=True)
     verification_document_id = models.CharField(max_length=255, blank=True, null=True)
@@ -87,8 +88,16 @@ class CustomerInfo(AbstractUser):
 
     REQUIRED_FIELDS = []
 
+    def generate_reset_token(self):
+        """Generate a reset token and set expiration."""
+        reset_token = get_random_string(length=6, allowed_chars="0123456789")
+        self.forget_password_token = reset_token
+        self.token_expiration = datetime.now() + timedelta(minutes=15)  # Token expires after 15 minutes
+        self.save()
+        return reset_token
     def __str__(self):
         return f"{self.first_name}"
+
 
     class Meta:
         ordering = ['-id']

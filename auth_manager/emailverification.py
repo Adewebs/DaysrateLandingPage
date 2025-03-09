@@ -1,35 +1,28 @@
-from rest_framework import status, generics
+from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
 from system_user.models import CustomerInfo
-from .serializers import EmailPasswordVerificationSerializer
+from .serializers import VerifyRegistrationSerializer
+from drf_spectacular.utils import extend_schema
 
 
-class EmailPasswordVerificationView(generics.GenericAPIView):
-    """View to verify email or password reset token"""
-    serializer_class = EmailPasswordVerificationSerializer
-    permission_classes = [AllowAny]
+class EmailVerificationView(APIView):
+    @extend_schema(
+        request=VerifyRegistrationSerializer,
+        responses={200: OpenApiResponse(description="User verified successfully."),
+                   400: OpenApiResponse(description="Invalid email or registration token.")}
+    )
+    def post(self, request):
+        serializer = VerifyRegistrationSerializer(data=request.data)
 
-    def post(self, request, *args, **kwargs):
-        # Initialize serializer with the request data
-        serializer = self.get_serializer(data=request.data)
-
-        # Validate the serializer
         if serializer.is_valid():
-            user = serializer.validated_data['user']
-            is_email_verification = serializer.validated_data['is_email_verification']
+            email = serializer.validated_data['email']
+            user = CustomerInfo.objects.get(email=email)
+            user.is_user_verified = True
+            user.save()
 
-            # Process email verification
-            if is_email_verification:
-                user.is_user_verified = True
-                user.registration_token = ""  # Clear the registration token after verification
-                user.save()
-                return Response({"detail": "Email successfully verified."}, status=status.HTTP_200_OK)
-
-            # Process password reset verification
-            else:
-                user.forget_password_token = ""  # Clear the password reset token after verification
-                user.save()
-                return Response({"detail": "Password reset token verified."}, status=status.HTTP_200_OK)
+            return Response({"message": "User verified successfully."}, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -16,6 +16,9 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+
+from auth_manager.emailverification import EmailVerificationView
+from auth_manager.password_reset import PasswordResetRequestView, PasswordResetVerifyView
 # Core URLs
 urlpatterns = [
 
@@ -29,6 +32,9 @@ urlpatterns = [
         ])),
     # App URLs with a clear header for each app
     # Buyers API URLs
+    path('api/v1/verify-registration/', EmailVerificationView.as_view(), name='verify-registration'),
+    path('api/v1/request-password-reset/', PasswordResetRequestView.as_view(), name='request-password-reset'),
+    path('api/v1/verify-password-reset-token/', PasswordResetVerifyView.as_view(), name='verify-password-reset-token'),
     path('api/v1/buyers/', include('buyers.urls')),
     # Customers API URLs
     path('api/v1/customers/', include('auth_manager.urls')),
