@@ -6,33 +6,11 @@ from dotenv import load_dotenv
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-import socket
-
-# Get the machine's hostname
-hostname = socket.gethostname()
 DEBUG = True
-# Assuming your local machine will have 'localhost' or '127.0.0.1'
-# if hostname == 'localhost' or hostname == '127.0.0.1':
-#     DEBUG = True
-#     ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-# else:
-#     DEBUG = False
-#     ALLOWED_HOSTS = ['daysrate.com']  # Empty list or other allowed hosts
-
-# DEBUG = True
-
 ALLOWED_HOSTS = ['api.daysrate.com', 'www.api.daysrate.com', 'localhost', '127.0.0.1']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -85,8 +63,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 if DEBUG:
 
     DATABASES = {
@@ -108,8 +84,6 @@ else:
         }
     }
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -126,22 +100,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
+STATIC_URL = '/static/'
+# Directories where Django will look for static files (including app static folders).
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',]
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# Directory where collected static files will be stored in production.
+STATIC_ROOT = '/home/daysyrgs/api.daysrate.com/static'  # Ensure this folder exists.
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = '/media/'
 
@@ -215,9 +185,6 @@ SPECTACULAR_SETTINGS = {
         {'Bearer': []},  # JWT authentication
     ],
 }
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
