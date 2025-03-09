@@ -4,7 +4,6 @@ from django.contrib.auth.hashers import make_password
 from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
-
 class CustomerInfoSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     class Meta:
@@ -58,8 +57,35 @@ class CustomerInfoSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-# New Serializer for GET requests (Read Only)
 class CustomerInfoRetrieveSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomerInfo
         fields = ['first_name', 'last_name', 'email', 'phone_number', 'country', 'user_type','currency','user_address']
+
+
+class EmailPasswordVerificationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    token = serializers.CharField()
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+        token = attrs.get('token')
+
+        # Check if the email exists
+        try:
+            user = CustomerInfo.objects.get(email=email)
+        except CustomerInfo.DoesNotExist:
+            raise serializers.ValidationError({"detail": "User with this email does not exist."})
+
+        # Check if token matches either the registration token or the password reset token
+        if user.registration_token == token:
+            attrs['user'] = user
+            attrs['is_email_verification'] = True
+        elif user.forget_password_token == token:
+            attrs['user'] = user
+            attrs['is_email_verification'] = False
+        else:
+            raise serializers.ValidationError({"detail": "Invalid token."})
+
+        return attrs
+
