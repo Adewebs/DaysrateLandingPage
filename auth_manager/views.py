@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
 from system_user.models import CustomerInfo
-from .serializers import CustomerInfoSerializer, CustomerInfoRetrieveSerializer
+from system_user.serializers import CustomerInfoSerializer, CustomerInfoRetrieveSerializer
 
 @extend_schema_view(
     create=extend_schema(

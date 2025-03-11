@@ -2,60 +2,21 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from datetime import datetime, timedelta
 from django.utils.crypto import get_random_string
+from django.conf import settings
 class CustomerInfo(AbstractUser):
-    COUNTRY_CHOICES = [
-        ("NG", "Nigeria"),
-        ("GH", "Ghana"),
-        ("KE", "Kenya"),
-        ("ZA", "South Africa"),
-        ("UG", "Uganda"),
-        ("US", "USA"),
-        ("GB", "UK"),
-        ("CA", "Canada"),
-        ("AE", "UAE"),
-    ]
-
-    CURRENCY_CHOICES = [
-        ("NGN", "Nigerian Naira (₦)"),
-        ("GHS", "Ghanaian Cedi (₵)"),
-        ("KES", "Kenyan Shilling (KSh)"),
-        ("ZAR", "South African Rand (R)"),
-        ("UGX", "Ugandan Shilling (USh)"),
-        ("USD", "US Dollar ($)"),
-        ("GBP", "British Pound (£)"),
-        ("CAD", "Canadian Dollar (C$)"),
-        ("AED", "United Arab Emirates Dirham (د.إ)"),
-    ]
-
-    USER_TYPE_CHOICES = [
-        ("MERCHANT", "Merchant"),
-        ("BUYER", "Buyer"),
-    ]
-
+    COUNTRY_CHOICES = settings.COUNTRY_CHOICES
+    CURRENCY_CHOICES = settings.CURRENCY_CHOICES
+    USER_TYPE_CHOICES = settings.USER_TYPE_CHOICES
     first_name = models.CharField(max_length=255, blank=True, null=True)
     last_name = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(unique=True)
-    country = models.CharField(
-        max_length=3,  # 3-character code for country
-        choices=COUNTRY_CHOICES,
-        blank=True,
-        null=True
-    )
-    user_type = models.CharField(
-        max_length=8,  # Merchant or Buyer
-        choices=USER_TYPE_CHOICES,
-        default="BUYER"  # Default to Buyer
-    )
-
-    currency = models.CharField(
-        max_length=3,  # Currency code
-        choices=CURRENCY_CHOICES,
-        blank=True,
-        null=True
-    )
+    country = models.CharField(max_length=3,choices=COUNTRY_CHOICES,blank=True,null=True)
+    user_type = models.CharField(max_length=8,choices=USER_TYPE_CHOICES,default="BUYER")
+    currency = models.CharField(max_length=3,choices=CURRENCY_CHOICES,blank=True,null=True)
     user_address = models.CharField(max_length=200, blank=True, null=True)
     transaction_pin = models.CharField(max_length=100, blank=True, null=True)
     is_user_verified = models.BooleanField(default=False)
+    is_merchant_approve = models.BooleanField(default=False)
     is_user_ban = models.BooleanField(default=False)
     is_user_having_update = models.BooleanField(default=False)
     is_transaction_pin_set = models.BooleanField(default=False)
@@ -68,7 +29,9 @@ class CustomerInfo(AbstractUser):
     profile_image = models.ImageField(upload_to='customer_profile_image/', blank=True, null=True)
     verification_document_id = models.CharField(max_length=255, blank=True, null=True)
     user_documents = models.FileField(upload_to='verification_document/', blank=True, null=True)
+    merchant_documents = models.FileField(upload_to='verification_document/', blank=True, null=True)
     user_face_verification_documents = models.FileField(upload_to='user_face_verification_document/', blank=True, null=True)
+
 
     groups = models.ManyToManyField(
         Group,
@@ -101,3 +64,21 @@ class CustomerInfo(AbstractUser):
 
     class Meta:
         ordering = ['-id']
+
+
+class CustomerCardInformation(models.Model):
+    customer = models.ForeignKey(CustomerInfo, on_delete=models.CASCADE)
+    card_name = models.CharField(max_length=255, blank=True, null=True)
+    card_number = models.CharField(max_length=255, blank=True, null=True)
+    card_type = models.CharField(max_length=255, blank=True, null=True)
+    card_csv = models.CharField(max_length=255, blank=True, null=True)
+    card_token = models.CharField(max_length=255, blank=True, null=True)
+    card_pin = models.CharField(max_length=255, blank=True, null=True)
+
+
+class CustomerBeneficiaries(models.Model):
+    customer = models.ForeignKey(CustomerInfo, on_delete=models.CASCADE)
+    bank_account_name = models.CharField(max_length=255, blank=True, null=True)
+    bank_code = models.CharField(max_length=255, blank=True, null=True)
+    bank_account_number = models.CharField(max_length=255, blank=True, null=True)
+    bank_name = models.CharField(max_length=255, blank=True, null=True)

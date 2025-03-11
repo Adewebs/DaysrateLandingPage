@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'systemcontrol',
     'auth_manager',
     'system_user',
+    'site_transactions',
     'django.contrib.humanize',
 
 ]
@@ -188,3 +189,38 @@ SPECTACULAR_SETTINGS = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# settings.py
+
+CURRENCY_CHOICES = [
+    ("NGN", "Nigerian Naira (₦)"),
+    ("GHS", "Ghanaian Cedi (₵)"),
+    ("KES", "Kenyan Shilling (KSh)"),
+    ("ZAR", "South African Rand (R)"),
+    ("UGX", "Ugandan Shilling (USh)"),
+    ("USD", "US Dollar ($)"),
+    ("GBP", "British Pound (£)"),
+    ("CAD", "Canadian Dollar (C$)"),
+    ("AED", "United Arab Emirates Dirham (د.إ)"),
+]
+
+PAYMENT_CHOICES = [
+        ("CARD", "CARD PAYMENT"),
+        ("WALLET", "WALLET PAYMENT")]
+
+
+COUNTRY_CHOICES = [
+        ("NG", "Nigeria"),
+        ("GH", "Ghana"),
+        ("KE", "Kenya"),
+        ("ZA", "South Africa"),
+        ("UG", "Uganda"),
+        ("US", "USA"),
+        ("GB", "UK"),
+        ("CA", "Canada"),
+        ("AE", "UAE"),
+    ]
+
+USER_TYPE_CHOICES = [
+        ("MERCHANT", "Merchant"),
+        ("BUYER", "Buyer"),
+    ]
