@@ -19,6 +19,9 @@ from rest_framework_simplejwt.views import (
 
 from auth_manager.emailverification import EmailVerificationView
 from auth_manager.password_reset import PasswordResetRequestView, PasswordResetVerifyView
+from merchant.process_transactions import ProcessTransactionView
+
+
 # Core URLs
 urlpatterns = [
 
@@ -35,11 +38,14 @@ urlpatterns = [
     path('api/v1/verify-registration/', EmailVerificationView.as_view(), name='verify-registration'),
     path('api/v1/request-password-reset/', PasswordResetRequestView.as_view(), name='request-password-reset'),
     path('api/v1/verify-password-reset-token/', PasswordResetVerifyView.as_view(), name='verify-password-reset-token'),
+    path('process-transaction/', ProcessTransactionView.as_view(), name='process-transaction'),
     path('api/v1/buyers/', include('buyers.urls')),
+    path('api/v1/transactions/', include('site_transactions.urls')),
     # Customers API URLs
     path('api/v1/customers/', include('auth_manager.urls')),
     # Merchant API URLs
     path('api/v1/merchant/', include('merchant.urls')),
+    path('api/v1/system_user/', include('system_user.urls')),
     # System control configuration URLs
     path('api/v1/config/', include('systemcontrol.urls')),
 

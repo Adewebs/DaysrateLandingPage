@@ -201,6 +201,7 @@ CURRENCY_CHOICES = [
     ("GBP", "British Pound (£)"),
     ("CAD", "Canadian Dollar (C$)"),
     ("AED", "United Arab Emirates Dirham (د.إ)"),
+
 ]
 
 PAYMENT_CHOICES = [
@@ -220,7 +221,31 @@ COUNTRY_CHOICES = [
         ("AE", "UAE"),
     ]
 
+
+VALID_CURRENCY_CODES = {"NGN", "GHS", "KES", "ZAR", "UGX", "USD", "GBP", "CAD", "AED"}
+
 USER_TYPE_CHOICES = [
         ("MERCHANT", "Merchant"),
         ("BUYER", "Buyer"),
     ]
+
+#settings.py
+ENUM_NAME_OVERRIDES = {
+    'CurrencyEnum': 'Currency',
+    'MerchantCurrencyExchangeEnum': 'MerchantCurrencyExchange'
+}
+
+
+# settings.py
+
+COUNTRY_CURRENCY_MAPPING = {
+    'NG': 'NGN',  # Nigeria -> Nigerian Naira (₦)
+    'GH': 'GHS',  # Ghana -> Ghanaian Cedi (₵)
+    'KE': 'KES',  # Kenya -> Kenyan Shilling (KSh)
+    'ZA': 'ZAR',  # South Africa -> South African Rand (R)
+    'UG': 'UGX',  # Uganda -> Ugandan Shilling (USh)
+    'US': 'USD',  # USA -> US Dollar ($)
+    'GB': 'GBP',  # UK -> British Pound (£)
+    'CA': 'CAD',  # Canada -> Canadian Dollar (C$)
+    'AE': 'AED',  # UAE -> United Arab Emirates Dirham (د.إ)
+}

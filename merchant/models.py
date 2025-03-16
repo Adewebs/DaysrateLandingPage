@@ -22,4 +22,6 @@ class MerchantBuyingRate(models.Model):
     merchant = models.ForeignKey(CustomerInfo, on_delete=models.CASCADE)
     currency = models.CharField(max_length=3,choices=CURRENCY_CHOICES,blank=True,null=True)
     buying_rate = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    quantity_available_for_sale = models.PositiveIntegerField(default=0)
+    available_for_transaction = models.BooleanField(default=True)
     last_updated = models.DateTimeField(auto_now_add=True)

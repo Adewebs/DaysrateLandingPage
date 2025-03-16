@@ -4,8 +4,8 @@ from django.conf import settings
 class GeneralTransaction(models.Model):
     PAYMENT_CHOICES = settings.PAYMENT_CHOICES
     CURRENCY_CHOICES = settings.CURRENCY_CHOICES
-    buyer = models.ForeignKey(CustomerInfo, on_delete=models.CASCADE, related_name='buyer_exchanging')
-    merchant = models.ForeignKey(CustomerInfo, on_delete=models.CASCADE, related_name='merchant_exchanging')
+    buyer = models.ForeignKey(CustomerInfo, on_delete=models.CASCADE, related_name='buyer_exchanging', null=True,blank=True)
+    merchant = models.ForeignKey(CustomerInfo, on_delete=models.CASCADE, related_name='merchant_exchanging', null=True,blank=True)
     buyer_currency_exchange = models.CharField(max_length=3,choices=CURRENCY_CHOICES,blank=True,null=True)
     merchant_currency_exchange = models.CharField(max_length=3,choices=CURRENCY_CHOICES,blank=True,null=True)
     buyer_paid = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)

@@ -58,6 +58,13 @@ class CustomerInfo(AbstractUser):
         self.token_expiration = datetime.now() + timedelta(minutes=15)  # Token expires after 15 minutes
         self.save()
         return reset_token
+
+    def save(self, *args, **kwargs):
+        # Automatically set the currency based on the selected country
+        if self.country and not self.currency:  # Only set currency if it's not already set
+            self.currency = settings.COUNTRY_CURRENCY_MAPPING.get(self.country)
+
+        super().save(*args, **kwargs)
     def __str__(self):
         return f"{self.first_name}"
 
