@@ -249,3 +249,6 @@ COUNTRY_CURRENCY_MAPPING = {
     'CA': 'CAD',  # Canada -> Canadian Dollar (C$)
     'AE': 'AED',  # UAE -> United Arab Emirates Dirham (د.إ)
 }
+
+# settings.py
+STRIPE_SECRET_KEY = "sk_test_26PHem9AhJZvU623DfE1x4sd"
